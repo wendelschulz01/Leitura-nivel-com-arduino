@@ -93,7 +93,7 @@ app.get("/api/readings", async (req, res) =>{
     try {
         const [rows] = await pool.execute(
             `
-            SELECT * FROM leiturar_sensor
+            SELECT * FROM leituras_sensor
             ORDER BY criado_em DESC
             LIMIT 100
             `
