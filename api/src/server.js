@@ -89,7 +89,7 @@ app.post("/api/readings", async (req,res) => {
     }
 });
 
-app.get("/api/readings", async (req, res) =>{
+app.get("/api/readings/{id}", async (req, res) =>{
     try {
         const [rows] = await pool.execute(
             `

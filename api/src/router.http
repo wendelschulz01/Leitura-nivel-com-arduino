@@ -1,0 +1,37 @@
+### Variaveis de ambiente de teste
+@baseurl = http://localhost:4000
+@apiKey = troque-essa-chave
+
+###
+
+GET {{baseurl}}/health
+
+###
+
+POST {{baseurl}}/api/readings
+Content-Type: application/json
+
+{
+  "device_id": "rasp-comporta-01",
+  "api_key": "{{apiKey}}",
+  "tensao": 3.45,
+  "corrente_ma": 13.80,
+  "nivel_percentual": 61.25
+}
+
+###
+
+POST {{baseurl}}/api/readings
+Content-Type: application/json
+
+{
+  "device_id": "rasp-comporta-01",
+  "api_key": "CHAVE_ERRADA_123",
+  "tensao": 3.45,
+  "corrente_ma": 13.80,
+  "nivel_percentual": 61.25
+}
+
+###
+
+GET {{baseurl}}/api/readings
