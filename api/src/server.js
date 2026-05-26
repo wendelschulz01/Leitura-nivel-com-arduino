@@ -89,7 +89,33 @@ app.post("/api/readings", async (req,res) => {
     }
 });
 
-app.get("/api/readings/{id}", async (req, res) =>{
+app.get("/api/readings/:id", async (req, res) =>{
+
+    const id = req.params.id;
+
+
+    try {
+        const [rows] = await pool.execute(
+            `
+            SELECT * FROM leituras_sensor
+            WHERE id = ?
+            `, 
+            [id]
+        );
+
+        res.json(rows);
+
+    } catch(error) {
+        console.log("Erro ao buscar leituras", error);
+
+        res.status(500).json({
+            error: "Erro ao buscar leituras"
+        });
+    }
+});
+
+app.get("/api/readings/", async (req, res) =>{
+
     try {
         const [rows] = await pool.execute(
             `
