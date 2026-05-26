@@ -23,3 +23,29 @@ Primeira simulação utilizando potenciômetro:
 * Para obter uma litura precisa, é necessário um valor de correção. O motivo é que o sensor nunca vai estar até o fundo do reservatório analisar, mas precisa ler esse "espaço" que falta.
 
 
+```md
+### Como rodar
+
+1. Crie o arquivo `.env` com as variáveis do `.env.example`.
+
+2. Suba os containers:
+
+```bash
+docker compose up -d --build
+
+3. Verifique os logs:
+
+```bash
+docker compose logs -f api
+
+4. Teste a API
+
+```bash
+curl http://localhost:4000/health
+
+5.Para parar
+
+```bash
+docker compose down
+
+
