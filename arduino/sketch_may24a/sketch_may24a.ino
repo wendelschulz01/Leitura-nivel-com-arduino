@@ -4,7 +4,7 @@
 const int SENSOR_PIN = A0;
 
 
-const float TENSAO_MIN = 1.0;
+const float TENSAO_MIN = 0.0;
 const float TENSAO_MAX = 5.0;
 
 //Faixa física da sonda
@@ -46,7 +46,7 @@ float lerTensaoFiltrada() {
   float soma = 0;
 
   //média de 10 leituras
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 42; i++) {
 
     int adc = analogRead(SENSOR_PIN);
 
@@ -58,7 +58,7 @@ float lerTensaoFiltrada() {
     delay(5);
   }
 
-  return soma / 10.0;
+  return soma / 42.0;
 }
 
 
@@ -215,6 +215,8 @@ void setup() {
   Serial.println();
   Serial.println("SISTEMA DE TELEMETRIA INICIADO");
 
+  //SPI.begin();
+
   //DHCP
   if (Ethernet.begin(mac) == 0) {
 
@@ -222,13 +224,11 @@ void setup() {
       "Falha ao obter IP via DHCP"
     );
 
-    while (true);
+  } else { 
+
+    Serial.print("IP Arduino: ");
+    Serial.println(Ethernet.localIP());
   }
-
-  delay(1000);
-
-  Serial.print("IP Arduino: ");
-  Serial.println(Ethernet.localIP());
 }
 
 
