@@ -24,17 +24,18 @@ app.post("/api/readings", async (req,res) => {
             device_id,
             api_key,
             tensao,
-            corrente_ma,
-            nivel_percentual
+            nivel_percentual,
+            nivel_metros
         } = req.body;
 
         if(!device_id || !api_key) {
-            res.status(400).json({
+           return res.status(400).json({
                 error: "device_id e api_key são obrigatórios"
             });
         }
 
         if(api_key !== process.env.DEVICE_API_KEY) {
+
             return res.status(400).json({
                 error: "API key inválida"
             });
@@ -42,8 +43,11 @@ app.post("/api/readings", async (req,res) => {
 
         if(nivel_percentual < 0 ||
             nivel_percentual > 100 ||
-            corrente_ma < 3 ||
-            corrente_ma > 22
+            nivel_metros < 0 ||
+            nivel_metros > 10 ||
+
+            tensao < 0 ||
+            tensao > 5
         ) {
             return res.status(400).json({
                 error: "valores fora da faixa esperada"
@@ -60,8 +64,8 @@ app.post("/api/readings", async (req,res) => {
             (
                 device_id,
                 tensao,
-                corrente_ma,
                 nivel_percentual,
+                nivel_metros,
                 ip_origem
             )
                 VALUES (?,?,?,?,?)
@@ -69,8 +73,8 @@ app.post("/api/readings", async (req,res) => {
             [
                 device_id,
                 tensao,
-                corrente_ma,
                 nivel_percentual,
+                nivel_metros,
                 ipOrigem,
             ]     
         );
@@ -84,7 +88,7 @@ app.post("/api/readings", async (req,res) => {
         console.error("Erro ao salvar leitura", error);
 
         res.status(500).json({
-            error: "Erro interno no servidor    "
+            error: "Erro interno no servidor"
         });
     }
 });
