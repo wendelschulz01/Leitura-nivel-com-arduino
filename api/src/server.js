@@ -41,6 +41,10 @@ app.post("/api/readings", async (req,res) => {
             });
         }
 
+        let status_leitura = "ok"
+        let msg = "Leitura salva com sucesso"
+
+
         if(nivel_percentual < 0 ||
             nivel_percentual > 100 ||
             nivel_metros < 0 ||
@@ -49,9 +53,8 @@ app.post("/api/readings", async (req,res) => {
             tensao < 0 ||
             tensao > 5
         ) {
-            return res.status(400).json({
-                error: "valores fora da faixa esperada"
-            });
+            status_leitura = "alerta"
+            msg = "Leitura salva, valores podem estar comprometidos"
         }
 
         const ipOrigem  = 
@@ -66,9 +69,10 @@ app.post("/api/readings", async (req,res) => {
                 tensao,
                 nivel_percentual,
                 nivel_metros,
-                ip_origem
+                ip_origem,
+                status_leitura
             )
-                VALUES (?,?,?,?,?)
+                VALUES (?,?,?,?,?,?)
             `,
             [
                 device_id,
@@ -76,11 +80,13 @@ app.post("/api/readings", async (req,res) => {
                 nivel_percentual,
                 nivel_metros,
                 ipOrigem,
+                status_leitura,
             ]     
         );
 
         res.status(201).json({
-            message: "Leitura salva com sucesso",
+            message: msg,
+            status_leitura,
             id: result.insertId
         });
 
